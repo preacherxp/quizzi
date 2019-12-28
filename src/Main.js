@@ -1,33 +1,35 @@
 import React from "react";
+import { BrowserRouter as Router, Switch, Route } from "react-router-dom";
+
 import "./Main.scss";
-import firebase from "firebase";
+import Navbar from "./components/Navbar";
+import { CreateQuiz } from "./views/CreateQuiz";
+import Discover from "./views/Discover";
+import MyQuizes from "./views/MyQuizes";
+import Dashboard from "./views/Dashboard";
 
 function Main() {
-  const firebaseConfig = {
-    apiKey: process.env.REACT_APP_apiKey,
-    authDomain: process.env.REACT_APP_authDomain,
-    databaseURL: process.env.REACT_APP_databaseURL,
-    projectId: process.env.REACT_APP_projectId,
-    storageBucket: process.env.REACT_APP_storageBucket,
-    messagingSenderId: process.env.REACT_APP_messagingSenderId,
-    appId: process.env.REACT_APP_appId,
-    measurementId: process.env.REACT_APP_measurementId
-  };
-  firebase.initializeApp(firebaseConfig);
-  const db = firebase.firestore();
-
-  const docRef = db.collection("quizes");
-
-  docRef
-    .get()
-    .then(querySnapshot => {
-      console.log(querySnapshot.docs[0].data());
-    })
-    .catch(function(error) {
-      console.log("Error getting document:", error);
-    });
-
-  return <div className="main">%REACT_APP_NOT_SECRET_CODE%</div>;
+  return (
+    <div className="main">
+      <Router>
+        <Navbar />
+        <Switch>
+          <Route path="/discover">
+            <Discover />
+          </Route>
+          <Route path="/create">
+            <CreateQuiz />
+          </Route>
+          <Route path="/my-quizes">
+            <MyQuizes />
+          </Route>
+          <Route path="/">
+            <Dashboard />
+          </Route>
+        </Switch>
+      </Router>
+    </div>
+  );
 }
 
 export default Main;
